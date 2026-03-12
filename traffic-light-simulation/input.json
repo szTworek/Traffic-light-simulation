@@ -1,0 +1,37 @@
+{
+  "roads": {
+    "north": {
+      "leftTurnLane": false,
+      "rightTurnLane": false
+    },
+    "south": {
+      "leftTurnLane": true,
+      "rightTurnLane": true
+    },
+    "east": {
+      "leftTurnLane": true,
+      "rightTurnLane": true
+    },
+    "west": {
+      "leftTurnLane": true,
+      "rightTurnLane": false
+    }
+  },
+  "maxStayTime": 5,
+  "fastSimulation": false,
+  "commands": [
+    { "type": "addVehicle", "vehicleId": "V1", "startRoad": "north", "endRoad": "south" },
+    { "type": "addVehicle", "vehicleId": "V2", "startRoad": "south", "endRoad": "north" },
+    { "type": "step" },
+    { "type": "addVehicle", "vehicleId": "V3", "startRoad": "east", "endRoad": "west" },
+    { "type": "addVehicle", "vehicleId": "V4", "startRoad": "west", "endRoad": "north" },
+    { "type": "step" },
+    { "type": "addVehicle", "vehicleId": "V5", "startRoad": "north", "endRoad": "east" },
+    { "type": "step" },
+    { "type": "step" },
+    { "type": "addVehicle", "vehicleId": "V6", "startRoad": "south", "endRoad": "west" },
+    { "type": "addVehicle", "vehicleId": "V7", "startRoad": "east", "endRoad": "north" },
+    { "type": "step" },
+    { "type": "step" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "roads": {
+    "south": { "leftTurnLane": true, "rightTurnLane": false },
+    "north": { "leftTurnLane": false, "rightTurnLane": false },
+    "east":  { "leftTurnLane": false, "rightTurnLane": false },
+    "west":  { "leftTurnLane": false, "rightTurnLane": false }
+  },
+  "maxStayTime": 10,
+  "fastSimulation": true,
+  "commands": [
+    { "type": "addVehicle", "vehicleId": "v1", "startRoad": "south", "endRoad": "west" },
+    { "type": "addVehicle", "vehicleId": "v2", "startRoad": "south", "endRoad": "north" },
+    { "type": "step" }
+  ]
+}

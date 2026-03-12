@@ -1,0 +1,6 @@
+services:
+  simulation:
+    build: .
+    volumes:
+      - .:/app/data
+    command: ["/app/data/input.json", "/app/data/output.json"]
