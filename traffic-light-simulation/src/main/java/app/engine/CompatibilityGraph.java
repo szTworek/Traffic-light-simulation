@@ -1,6 +1,7 @@
 package app.engine;
 
 import app.model.Movement;
+import app.model.MovementType;
 import app.model.TrafficLane;
 
 import java.util.*;
@@ -44,40 +45,24 @@ public class CompatibilityGraph {
 
     static boolean doConflict(Movement a, Movement b) {
         if (a.from() == b.from()) return false;
-
         if (a.to() == b.to()) return true;
 
-        if (a.from() == b.to() && a.to() == b.from()) return false;
+        MovementType typeA = a.getType();
+        MovementType typeB = b.getType();
 
-        if (isLeftTurn(a) && isLeftTurn(b) && a.from() == b.from().getOpposite()) {
-            return false;
+        if ((typeA == MovementType.STRAIGHT && typeB == MovementType.LEFT) ||
+                (typeA == MovementType.LEFT && typeB == MovementType.STRAIGHT)) {
+            return true;
         }
 
-        boolean sharedVertex = a.from() == b.to() || a.to() == b.from() || a.to() == b.to();
-        if (!sharedVertex) {
-            return chordsIntersect(
-                    a.from().toIndex(), a.to().toIndex(),
-                    b.from().toIndex(), b.to().toIndex()
-            );
+        if (typeA == MovementType.STRAIGHT && typeB == MovementType.STRAIGHT) {
+            return a.from() != b.to();
         }
 
-        return isLeftTurn(a) || isLeftTurn(b);
-    }
+        if (typeA == MovementType.LEFT && typeB == MovementType.LEFT) {
+            return a.from() != b.from().getOpposite();
+        }
 
-    private static boolean isLeftTurn(Movement m) {
-        return m.to() == m.from().getLeft();
-    }
-
-    private static boolean chordsIntersect(int p, int q, int r, int s) {
-        return isBetween(p, q, r) != isBetween(p, q, s);
-    }
-
-    private static boolean isBetween(int p, int q, int x) {
-        int n = 4;
-        p = ((p % n) + n) % n;
-        q = ((q % n) + n) % n;
-        x = ((x % n) + n) % n;
-        if (p < q) return p < x && x < q;
-        return p < x || x < q;
+        return false;
     }
 }

@@ -94,13 +94,13 @@ Algorytm wyboru optymalnej konfiguracji świateł opiera się na **teorii grafó
 
 Przy inicjalizacji skrzyżowania budowany jest graf, w którym wierzchołkami są wszystkie możliwe **ruchy** (pary kierunek wjazdu → kierunek wyjazdu, np. NORTH→SOUTH, EAST→NORTH). Dwa ruchy są połączone krawędzią, jeśli **nie kolidują ze sobą** i mogą bezpiecznie odbywać się jednocześnie.
 
-Detekcja kolizji (`CompatibilityGraph.doConflict`) opiera się na geometrycznej analizie torów na skrzyżowaniu modelowanym jako cztero-wierzchołkowy cykl:
-- **Ten sam wjazd** → brak konfliktu (pojazdy na różnych pasach tej samej drogi).
-- **Ten sam wyjazd** → konflikt (punkt scalania ruchu).
-- **Ruch naprzeciwko** (np. N→S i S→N) → brak konfliktu (tory się nie przecinają).
-- **Dwa skręty w lewo z naprzeciwka** → brak konfliktu (skręcają "za sobą").
-- **Test przecięcia cięciw** - dla pozostałych przypadków, kierunki są traktowane jako punkty na okręgu (N=0, E=1, S=2, W=3) i sprawdzane jest, czy cięciwy (tory ruchu) przecinają się geometrycznie.
-- **Skręt w lewo** - ze względu na jego specyfikę (przecinanie toru ruchu z naprzeciwka), jest traktowany jako potencjalnie kolidujący z ruchami mającymi wspólny wierzchołek końcowy lub początkowy.
+Detekcja kolizji (`CompatibilityGraph.doConflict`) opiera się na logicznej analizie typów manewrów (`STRAIGHT`, `LEFT`, `RIGHT`) zgodnie z zasadami ruchu prawostronnego:
+- **Ten sam wjazd** → brak konfliktu.
+- **Ten sam wyjazd** → konflikt.
+- **Prosto i skręt w lewo** → konflikt (przecięcie torów jazdy na środku skrzyżowania).
+- **Dwa razy prosto** → brak konfliktu dla jazd z naprzeciwka, w przeciwnym razie konflikt (kierunki prostopadłe).
+- **Dwa skręty w lewo z naprzeciwka** → brak konfliktu (bezkolizyjne mijanie się wewnątrz skrzyżowania), w przeciwnym razie konflikt.
+- **Skręt w prawo** - brak konfliktu z pozostałymi ruchami.
 
 ### Tak prezentują się wierzchołki i krawędzie wychodzące od południowej drogi skrzyżowania
 ![graph](https://github.com/user-attachments/assets/2c5aa726-23bb-44ee-9cc2-7ce5c5052a96)
